@@ -1,0 +1,27 @@
+emcc \
+-sEXPORT_ES6 \
+-sALLOW_MEMORY_GROWTH \
+-sMAXIMUM_MEMORY=4gb \
+-sENVIRONMENT=web,worker \
+-Oz \
+-std=c++20 \
+-lembind \
+--embind-emit-tsd allocate.d.ts \
+./src/main.cpp \
+-o ./dist/allocate.js &&
+EMCC_DEBUG=1 &&
+emcc \
+-sSTACK_OVERFLOW_CHECK=1 \
+-sSAFE_HEAP=1 \
+-sEXPORT_ES6 \
+-sALLOW_MEMORY_GROWTH \
+-sMAXIMUM_MEMORY=4gb \
+-sENVIRONMENT=web,worker \
+-g \
+-gsource-map \
+-O0 \
+-std=c++20 \
+-lembind \
+--embind-emit-tsd allocate.d.ts \
+./src/main.cpp \
+-o ./dist/allocate.debug.js

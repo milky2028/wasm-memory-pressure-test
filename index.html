@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WASM Memory Overflow Test</title>
+  </head>
+  <body>
+    <form>
+      <input
+        name="to_allocate"
+        placeholder="MB of memory to allocate"
+        type="number"
+      />
+    </form>
+    <script type="module">
+      const form = document.querySelector("form");
+
+      const format = new Intl.NumberFormat("en-us", {
+        maximumFractionDigits: 2,
+        maximumSignificantDigits: 2,
+      }).format;
+
+      function toHumanReadable(object) {
+        for (const key of Object.keys(object)) {
+          if (object[key] !== null && typeof object[key] === "object") {
+            toHumanReadable(object[key]);
+          } else if (key === "bytes") {
+            object[key] = `${format(object[key] / 1024 / 1024)}mb`;
+          }
+        }
+
+        return object;
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        const { default: initializer } = await import(
+          "./dist/allocate.debug.js"
+        );
+
+        const size = +new FormData(form).get("to_allocate");
+        const { allocate_memory, get_buffer } = await initializer();
+        const ptr = allocate_memory(size);
+
+        // console.log(get_buffer(ptr, size));
+        console.log(
+          toHumanReadable(await performance.measureUserAgentSpecificMemory())
+        );
+      });
+    </script>
+  </body>
+</html>

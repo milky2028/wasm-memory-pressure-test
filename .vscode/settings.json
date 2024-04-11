@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "cstring": "cpp"
+  },
+  "deno.enable": true
+}
