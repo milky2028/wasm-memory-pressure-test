@@ -1,4 +1,5 @@
 emcc \
+--memoryprofiler \
 -sEXPORT_ES6 \
 -sINITIAL_MEMORY=1gb \
 -sALLOW_MEMORY_GROWTH \
@@ -12,6 +13,7 @@ emcc \
 -o ./dist/allocate.js &&
 EMCC_DEBUG=1 &&
 emcc \
+--memoryprofiler \
 -sSTACK_OVERFLOW_CHECK=1 \
 -sSAFE_HEAP=1 \
 -sEXPORT_ES6 \
