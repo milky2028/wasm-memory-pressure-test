@@ -16,7 +16,7 @@
     </form>
     <script type="module">
       const form = document.querySelector("form");
-      const { default: initializer } = await import("./dist/allocate.js");
+      const { default: initializer } = await import("./allocate.js");
       const { allocate_memory, get_buffer } = await initializer();
 
       const format = new Intl.NumberFormat("en-us", {
