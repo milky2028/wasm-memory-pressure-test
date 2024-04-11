@@ -1,5 +1,6 @@
 #include <emscripten.h>
 #include <emscripten/bind.h>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
@@ -25,7 +26,12 @@ emscripten::val get_buffer(intptr_t buffer_ptr, size_t buffer_size) {
 intptr_t allocate_memory(size_t to_allocate) {
   auto size = to_mb(to_allocate);
   void* allocated_memory = malloc(size);
-  memset(allocated_memory, '$', size);
+  if (allocated_memory == NULL) {
+    printf("Memory allocation error\n");
+    return 0;
+  }
+
+  memset(allocated_memory, 'a' + rand() % 26, size);
   return ptr_to_int(allocated_memory);
 }
 
