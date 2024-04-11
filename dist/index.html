@@ -43,10 +43,11 @@
         const size = +new FormData(form).get("to_allocate");
         const ptr = allocate_memory(size);
 
-        // console.log(get_buffer(ptr, size));
-        console.log(
-          toHumanReadable(await performance.measureUserAgentSpecificMemory())
-        );
+        if ("measureUserAgentSpecificMemory" in performance) {
+          console.log(
+            toHumanReadable(await performance.measureUserAgentSpecificMemory())
+          );
+        }
       });
     </script>
   </body>
