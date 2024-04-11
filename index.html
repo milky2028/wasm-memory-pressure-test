@@ -12,9 +12,12 @@
         placeholder="MB of memory to allocate"
         type="number"
       />
+      <input type="submit" value="Allocate" />
     </form>
     <script type="module">
       const form = document.querySelector("form");
+      const { default: initializer } = await import("./dist/allocate.js");
+      const { allocate_memory, get_buffer } = await initializer();
 
       const format = new Intl.NumberFormat("en-us", {
         maximumFractionDigits: 2,
@@ -37,12 +40,7 @@
         event.preventDefault();
         event.stopImmediatePropagation();
 
-        const { default: initializer } = await import(
-          "./dist/allocate.debug.js"
-        );
-
         const size = +new FormData(form).get("to_allocate");
-        const { allocate_memory, get_buffer } = await initializer();
         const ptr = allocate_memory(size);
 
         // console.log(get_buffer(ptr, size));

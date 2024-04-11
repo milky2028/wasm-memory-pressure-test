@@ -5,6 +5,26 @@ const handler = async (request: Request): Promise<Response> => {
   const url = new URL(request.url);
 
   switch (url.pathname) {
+    case "/dist/allocate.wasm": {
+      const body = toReadableStream(await Deno.open("./dist/allocate.wasm"));
+      return new Response(body, {
+        status: 200,
+        headers: {
+          "Content-Type": "application/wasm",
+        },
+      });
+    }
+
+    case "/dist/allocate.js": {
+      const body = toReadableStream(await Deno.open("./dist/allocate.js"));
+      return new Response(body, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/javascript",
+        },
+      });
+    }
+
     case "/dist/allocate.debug.wasm": {
       const body = toReadableStream(
         await Deno.open("./dist/allocate.debug.wasm")
